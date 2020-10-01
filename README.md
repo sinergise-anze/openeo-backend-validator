@@ -1,3 +1,14 @@
+# Sentinel Hub OpenEO compliance tests
+
+This is a fork of https://github.com/Open-EO/openeo-backend-validator - it extends the parent to allow easy validation of Sentinel Hub OpenEO service.
+
+Please see https://github.com/sinergise-anze/openeo-backend-validator/tree/master/openeoct for further instructions.
+
+Original documentation below.
+
+-----
+
+
 # OpenEO compliance tests
 
 [![Build Status](https://travis-ci.org/Open-EO/openeo-backend-validator.svg?branch=master)](https://travis-ci.org/Open-EO/openeo-backend-validator)
