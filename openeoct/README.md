@@ -1,4 +1,20 @@
-# OpenEO compliance test using Go 
+# OpenEO compliance test - Sentinel Hub
+
+This is a fork of OpenEO compliance tool which makes it easier to check compliance of Sentinel Hub OpenEO backend.
+
+The building and running is simplified:
+
+1) copy `.env.example` to `.env` and enter Sentinel Hub credentials
+2) `docker-compose build`
+3) `docker-compose up`
+
+This will output the JSON file, which will also be in the `examples/` directory.
+
+Below is original documentation.
+
+-------
+
+# OpenEO compliance test using Go
 
 This standalone tool written in Go uses the Go package [kin-openapi](https://github.com/getkin/kin-openapi) to read the openapi definition and validates the response of the back end to self defined requests.
 In the flask folder there is a simple web application GUI for this tool also available on a public instance [here](https://www.geo.tuwien.ac.at/openeoct).
@@ -6,8 +22,8 @@ In the flask folder there is a simple web application GUI for this tool also ava
 ## Building
 
 1. Install Go on your computer, e.g. by downloading it from the [download page](https://golang.org/dl/).
-1. Clone this Github repository (e.g. `git clone https://github.com/Open-EO/openeo-backend-validator.git`). 
-1. Change to the `openeoct` folder of the repository. 
+1. Clone this Github repository (e.g. `git clone https://github.com/Open-EO/openeo-backend-validator.git`).
+1. Change to the `openeoct` folder of the repository.
 1. First, install the dependencies by calling the following commands:
 ```
         go get github.com/Open-EO/openeo-backend-validator/openeoct/kin-openapi/openapi3
@@ -49,12 +65,12 @@ If that does not help feel free to add an issue, but please first have a look at
 
 ## Configuration
 
-At the moment the tool requires at least one config file in [TOML](https://github.com/toml-lang/toml) or JSON format. In this guide we will focus on the TOML format. The following properties are configurable: 
+At the moment the tool requires at least one config file in [TOML](https://github.com/toml-lang/toml) or JSON format. In this guide we will focus on the TOML format. The following properties are configurable:
 
 *  *url (required)* - the base url of the backend that should be validated, if versioning is implemented by the backend (via [/.well-known/openeo](https://openeo.org/documentation/1.0/developers/api/reference.html#operation/connect)) , this has to be the url without the version. So for example `https://earthengine.openeo.org` instead of `https://earthengine.openeo.org/v1.0`.
 
 `url="https://earthengine.openeo.org"`
-*  *openapi (required)* - the openEO openapi(.yaml/.json) file/url it will be validated against 
+*  *openapi (required)* - the openEO openapi(.yaml/.json) file/url it will be validated against
 
 `openapi="https://gist.githubusercontent.com/bgoesswe/8459bd57202e05a2951c130a2168ce3a/raw/8a43112d027df58f1e8fd3c069d975cee5087fd8/openeoapi-1.0.0rc2.json"`
 *  *endpoints (required)* - list of endpoints that should be tested at the back end. Endpoints can have a group attribute, to structure the output by the groups and an optional attribute, so that the validation does not fail, but prints that it is invalid and not mandatory.
@@ -122,19 +138,19 @@ In the config file all endpoints need to be defined after the [endpoints] sectio
 `optional = true`
 * *timeout* - Integer of seconds the timeout for this endpoint should be set. Usually not needed, but if the endpoint takes some time it could cause problems.
 
-`timeout = 20` 
+`timeout = 20`
 
 * *order* - Integer to specify the order the endpoint validation should be done. The higher the number the later it will be validated, whereas several endpoints can have the same number. Defaults to 0, which is a special case and will be validated after all ordered endpoints. The order applies within each group (with no group being treated as a seperate group), but not over all specified endpoints.
 
-`order = 1` 
+`order = 1`
 
 * *wait* - Integer of seconds the validator will wait after the endpoint got validated.
 
-`wait = 10` 
+`wait = 10`
 
-* *retrycode* - String or openEO Error Response Code, on which occurance the validator will wait 2 seconds and try validating the endpoint again (max 10 times).  
+* *retrycode* - String or openEO Error Response Code, on which occurance the validator will wait 2 seconds and try validating the endpoint again (max 10 times).
 
-`retrycode = "JobNotFinished"` 
+`retrycode = "JobNotFinished"`
 
 The complete endpoints section in the config file looks similar to:
 ```
@@ -228,8 +244,8 @@ password="test123"
 
 ### Validation Report
 
-The output is a JSON object containing the state "Valid" for every endpoint that is valid against the openapi specification, 
-"Invalid" for every endpoint that is invalid with an error message with further information or with the state "Error" 
+The output is a JSON object containing the state "Valid" for every endpoint that is valid against the openapi specification,
+"Invalid" for every endpoint that is invalid with an error message with further information or with the state "Error"
 if something went wrong during the validation process (e.g. host not reachable). If an endpoint is missing at the backend, but in the capabilities of the backend, the state is "Missing". If an endpoint is validated, which is not in the capabilties of the backend, the state is "NotSupported".
 
 Example output:
