@@ -1,0 +1,15 @@
+version: "2.4"
+
+services:
+  openeoct:
+    image: openeo/openeoct
+    container_name: openeoct
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./examples/:/openeoct/examples
+    environment:
+      - SH_USERNAME="$SH_USERNAME"
+      - SH_PASSWORD="$SH_PASSWORD"
+    entrypoint: /bin/bash -c "cd /openeoct/examples && ./run_sh.sh"
